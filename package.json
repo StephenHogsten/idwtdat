@@ -1,0 +1,34 @@
+{
+  "name": "nightlife",
+  "version": "1.0.0",
+  "description": "coordinate nightlife for FCC",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hogdogthegod/idwtdat.git"
+  },
+  "author": "hogdog",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hogdogthegod/idwtdat/issues"
+  },
+  "homepage": "https://github.com/hogdogthegod/idwtdat#readme",
+  "devDependencies": {
+    "jshint": "^2.9.4",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "express-session": "^1.15.1",
+    "mongodb": "^2.2.24",
+    "mongoose": "^4.8.4",
+    "passport": "^0.3.2",
+    "serve-favicon": "^2.4.0"
+  }
+}
