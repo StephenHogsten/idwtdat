@@ -4,7 +4,9 @@
   "description": "coordinate nightlife for FCC",
   "main": "server.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "jshint": "jshint",
+    "sass": "node-sass scss/ --output public/css/"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,8 @@
   "homepage": "https://github.com/hogdogthegod/idwtdat#readme",
   "devDependencies": {
     "jshint": "^2.9.4",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "node-sass": "^4.5.0"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
