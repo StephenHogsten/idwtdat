@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "jshint": "jshint",
-    "sass": "node-sass scss/ --output public/css/"
+    "jshint": "jshint scripts/client_src/ || jshint scripts/config/ || exit 0",
+    "sass": "node-sass scss/ --output public/css/",
+    "browserify": "node scripts/config/browserify-dir.js",
+    "build": "npm run jshint && npm run sass && npm run browserify"
   },
   "repository": {
     "type": "git",
@@ -19,9 +21,13 @@
   },
   "homepage": "https://github.com/hogdogthegod/idwtdat#readme",
   "devDependencies": {
+    "babel-preset-es2015": "^6.22.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
     "jshint": "^2.9.4",
     "mocha": "^3.2.0",
-    "node-sass": "^4.5.0"
+    "node-sass": "^4.5.0",
+    "uglifyify": "^3.0.4"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
