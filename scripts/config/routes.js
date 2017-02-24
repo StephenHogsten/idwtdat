@@ -11,4 +11,9 @@ module.exports = (app) => {
   app.get('/profile', (req, res) => {
     res.sendFile(path.join(base, 'profile.html'));
   });
+
+  // APIs
+  app.get('/api/retrieve/:location', (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'junkdata.json'));
+  });
 };

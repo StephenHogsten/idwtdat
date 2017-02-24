@@ -1,2 +1,55 @@
 body {
-  background-color: #00e800; }
+  background-color: black; }
+
+.standard-round, .one-bar {
+  border-radius: 4px;
+  margin: 5px; }
+
+.header-bar {
+  background-color: DarkOliveGreen; }
+
+.footer {
+  background-color: DarkSeaGreen;
+  color: CornSilk; }
+
+.one-bar {
+  background-color: DarkSeaGreen;
+  background-size: cover;
+  height: 220px;
+  position: relative;
+  padding: 0px; }
+
+.bar-fade {
+  height: 220px;
+  background: linear-gradient(rgba(0, 0, 0, 0.2) 40%, black 100%);
+  margin: 0px;
+  z-index: 100; }
+
+.bar-info-container {
+  position: relative;
+  top: -110px; }
+
+.bar-title {
+  color: CornSilk;
+  font-weight: bolder; }
+
+.bar-subtitle {
+  color: CornSilk; }
+
+.going-count {
+  color: CornSilk; }
+
+.user-going {
+  color: CornSilk; }
+
+#bar-1 {
+  background-image: url("/public/img/rm1.jpg"); }
+
+#bar-2 {
+  background-image: url("/public/img/rm2.jpg"); }
+
+#bar-3 {
+  background-image: url("/public/img/rm3.jpg"); }
+
+#bar-4 {
+  background-image: url("/public/img/rm4.jpg"); }

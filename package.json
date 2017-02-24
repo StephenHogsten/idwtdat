@@ -5,10 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "jshint": "jshint scripts/client_src/ || jshint scripts/config/ || exit 0",
+    "jshint": "jshint scripts/client/ || jshint scripts/config/ || exit 0",
     "sass": "node-sass scss/ --output public/css/",
     "browserify": "node scripts/config/browserify-dir.js",
-    "build": "npm run jshint && npm run sass && npm run browserify"
+    "build": "npm run sass && npm run browserify"
   },
   "repository": {
     "type": "git",
@@ -30,14 +30,18 @@
     "uglifyify": "^3.0.4"
   },
   "dependencies": {
+    "babel-preset-react": "^6.23.0",
     "body-parser": "^1.16.1",
     "cookie-parser": "^1.4.3",
+    "d3-request": "^1.0.3",
     "dotenv": "^4.0.0",
     "express": "^4.14.1",
     "express-session": "^1.15.1",
     "mongodb": "^2.2.24",
     "mongoose": "^4.8.4",
     "passport": "^0.3.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "serve-favicon": "^2.4.0"
   }
 }

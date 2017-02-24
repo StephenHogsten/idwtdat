@@ -1,5 +1,71 @@
 $green: rgb(0,232, 0);
+$primary: DarkOliveGreen;
+$secondary: DarkSeaGreen;
+$primary-text: CornSilk;
+$bar-box-height: 220;
 
 body {
-  background-color: $green;
+  background-color: black;
+}
+
+.standard-round {
+  border-radius: 4px;
+  margin: 5px;
+}
+
+.header-bar {
+  background-color: $primary;
+}
+
+.footer {
+  background-color: $secondary;
+  color: $primary-text;
+}
+
+.one-bar {
+  @extend .standard-round;
+  background-color: $secondary;
+  background-size: cover;
+  height: unquote($bar-box-height + 'px');
+  position: relative;
+  padding: 0px;
+}
+
+.bar-fade {
+  height: unquote($bar-box-height + 'px');
+  background: linear-gradient(rgba(0,0,0,0.2) 40%, rgba(0, 0, 0, 1) 100%); 
+  margin: 0px;
+  z-index: 100;
+}
+
+.bar-info-container {
+  position: relative;
+  top: unquote(-$bar-box-height / 2 + 'px');
+}
+
+.bar-title {
+  color: $primary-text;
+  font-weight: bolder;
+}
+.bar-subtitle {
+  color: $primary-text;
+}
+.going-count {
+  color: $primary-text;
+}
+.user-going {
+  color: $primary-text;
+}
+
+#bar-1 {
+  background-image: url("/public/img/rm1.jpg")
+}
+#bar-2 {
+  background-image: url("/public/img/rm2.jpg")
+}
+#bar-3 {
+  background-image: url("/public/img/rm3.jpg")
+}
+#bar-4 {
+  background-image: url("/public/img/rm4.jpg")
 }

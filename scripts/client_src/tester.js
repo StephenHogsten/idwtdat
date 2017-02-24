@@ -1,4 +1,16 @@
-var path = require('path');
-var stinrealwkenwasdlwelkwa = 'tester'
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-document.getElementById('tester').innerHTML = path.join('x', 'y', stinrealwkenwasdlwelkwa);
+class Baddie extends React.Component {
+  render() {
+    console.log(this.props.data);
+    return (
+      <h1 className="baddie">{this.props.data.toString()}</h1>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Baddie data={[1,2,3,4]}/>,
+  document.getElementById('react-shell')
+)
