@@ -1,6 +1,9 @@
 body {
   background-color: black; }
 
+.fa {
+  color: CornSilk; }
+
 .standard-round, .one-bar {
   border-radius: 4px;
   margin: 5px; }

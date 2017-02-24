@@ -21349,11 +21349,12 @@ var OneBar = function (_React$Component) {
     key: 'render',
     value: function render() {
       console.log(this.props);
+
       return React.createElement(
         'div',
         {
           className: "one-bar col-md-5 col-sm-5 col-xs-10",
-          style: { backgroundImage: this.props.image }
+          style: { backgroundImage: 'url(' + this.props.image + ')' }
         },
         React.createElement('div', { className: 'bar-fade', key: 'bar-fade' }),
         React.createElement(

@@ -26,10 +26,11 @@ class OneBar extends React.Component {
   }
   render() {
     console.log(this.props);
+
     return (
       <div 
         className={"one-bar col-md-5 col-sm-5 col-xs-10"}
-        style={{backgroundImage: this.props.image}}
+        style={{backgroundImage: 'url(' + this.props.image + ')'}}
         >
         <div className="bar-fade" key="bar-fade"></div>
         <div className="bar-info-container" key="bar-info">
