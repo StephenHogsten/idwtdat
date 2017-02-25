@@ -50,7 +50,7 @@ class OneBar extends React.Component {
         <div className="bar-info-container" key="bar-info">
           <span className="bar-title" key="bar-title">{this.props.title}</span>
           <span className="stars" key="stars">{this.makeStars()}</span>
-          <span className="bar-subtitle" key="bar-subtitle">{this.props.snippet}</span>
+          {/*<span className="bar-subtitle" key="bar-subtitle">{this.props.snippet}</span>*/}
           <span className="going-count" key="going-count">{'total going: ' + this.props.countGoing}</span>
           {this.makeUserGoing()}
         </div>

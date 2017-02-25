@@ -1,6 +1,7 @@
 'use strict';
 
 const Business = require('../models/business.js');
+const httpPost = require('./httpPost');
 
 module.exports = {
   getBar: function(req, res, next) {
@@ -72,5 +73,18 @@ module.exports = {
       }
       doc.save( (err) => { if (err) throw err; });
     });
+  },
+  getToken: function(req, res, next) {
+    var yelpObj = {
+      grant_type: 'client_credentials',
+      client_id: process.env.YELP_APP_ID,
+      client_secret: process.env.YELP_APP_SECRET
+    };
+    httpPost('https://api.yelp.com/oauth2/token', yelpObj, (response) => {
+      res.send(response);
+      console.log(JSON.stringify(response));
+    });
   }
 }
+  
+
