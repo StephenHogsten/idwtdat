@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react');
+const d3 = require('d3-request');
 const OneBar = require('./OneBar.js');
 
 class AllBars extends React.Component {
@@ -8,37 +9,57 @@ class AllBars extends React.Component {
     super(props);
     var allRows = [];
     let bar, row;
+    
+    //edge-y cases
     if (!props.yelpData) { console.log('no yelp data found'); return; }   // probably should handle better
     if (!props.yelpData.businesses) { console.log('no businesses found'); return; }   // probably should handle better
     let businesses = props.yelpData.businesses.filter((vals) => !vals['is_closed']);
     if (!businesses) {console.log('no open businesses'); return; }
-    for (var i=0, l=Math.min(businesses.length, 20); i<l; i++) {
-      bar = {
-        title: businesses[i]['name'],
-        image: businesses[i]['image_url'],
-        rating: businesses[i]['rating'],
-        snippet: businesses[i]['snippet_text'],
-        url: businesses[i]['url'],
-        'react_key': i
-      };
-      // pull bar's counts from db, or create one if we don't find it
-      //  for now just set them randomly
-      bar.count = Math.floor(10 * Math.random());
-      bar['this_user'] = Math.random() > 0.5? true: false;
 
+    for (var i=0, l=Math.min(businesses.length, 20); i<l; i++) {
+      bar = this.parseBar(businesses[i]);
+      this.updateBar(bar);
       // add to array for state
-      if (i%2 === 0) {
-        row = [bar];
-      } else {
+      if (i%2 === 0) { row = [bar]; } 
+      else {
         row.push(bar);
         allRows.push(row);
       }
     }
-    if (i%2 !== 0) { allRows.push(row); }
+    if (i%2 !== 0) { allRows.push(row); }   // for odd numbers
 
     this.state = {
-      bars: allRows
+      bars: allRows,
+      user: props.user
     };
+  }
+
+  parseBar(yelpData) {
+    // parse data from this yelp node
+    let bar = {
+      title: yelpData['name'],
+      image: yelpData['image_url'],
+      rating: yelpData['rating'],
+      snippet: yelpData['snippet_text'],
+      url: yelpData['url'],
+      id: yelpData['id'],
+      countGoing: 0,        // placeholders while we wait for async
+      userGoing: false
+    };
+    return bar;
+  }
+
+  updateBar(bar) {
+    d3.json('/api/oneBar/' + bar.id + '/true', (err, json) => {
+      if (err) {console.log('api error'); throw err;}
+
+      console.log('bar 2:');
+      console.log(bar);
+      bar.countGoing = json.going_count;
+      bar.userGoing = json.user_going;    
+      //hopefully changing the object in the array will be recognized properly
+      this.forceUpdate();
+    });
   }
 
   renderRow(row, idx) {
@@ -56,9 +77,9 @@ class AllBars extends React.Component {
         rating={barObj.rating}
         snippet={barObj.snippet}
         url={barObj.url}
-        countGoing={barObj.count}
-        userGoing={barObj['this_user']}
-        key={barObj['react_key']}
+        countGoing={barObj.countGoing}
+        userGoing={barObj.userGoing}
+        key={barObj.id}
       />
     );
   }

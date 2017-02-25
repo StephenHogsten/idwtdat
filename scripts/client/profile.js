@@ -21202,6 +21202,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
+var d3 = require('d3-request');
 var OneBar = require('./OneBar.js');
 
 var AllBars = function (_React$Component) {
@@ -21215,6 +21216,8 @@ var AllBars = function (_React$Component) {
     var allRows = [];
     var bar = void 0,
         row = void 0;
+
+    //edge-y cases
     if (!props.yelpData) {
       console.log('no yelp data found');return _possibleConstructorReturn(_this);
     } // probably should handle better
@@ -21227,20 +21230,10 @@ var AllBars = function (_React$Component) {
     if (!businesses) {
       console.log('no open businesses');return _possibleConstructorReturn(_this);
     }
-    for (var i = 0, l = Math.min(businesses.length, 20); i < l; i++) {
-      bar = {
-        title: businesses[i]['name'],
-        image: businesses[i]['image_url'],
-        rating: businesses[i]['rating'],
-        snippet: businesses[i]['snippet_text'],
-        url: businesses[i]['url'],
-        'react_key': i
-      };
-      // pull bar's counts from db, or create one if we don't find it
-      //  for now just set them randomly
-      bar.count = Math.floor(10 * Math.random());
-      bar['this_user'] = Math.random() > 0.5 ? true : false;
 
+    for (var i = 0, l = Math.min(businesses.length, 20); i < l; i++) {
+      bar = _this.parseBar(businesses[i]);
+      _this.updateBar(bar);
       // add to array for state
       if (i % 2 === 0) {
         row = [bar];
@@ -21251,24 +21244,59 @@ var AllBars = function (_React$Component) {
     }
     if (i % 2 !== 0) {
       allRows.push(row);
-    }
+    } // for odd numbers
 
     _this.state = {
-      bars: allRows
+      bars: allRows,
+      user: props.user
     };
     return _this;
   }
 
   _createClass(AllBars, [{
+    key: 'parseBar',
+    value: function parseBar(yelpData) {
+      // parse data from this yelp node
+      var bar = {
+        title: yelpData['name'],
+        image: yelpData['image_url'],
+        rating: yelpData['rating'],
+        snippet: yelpData['snippet_text'],
+        url: yelpData['url'],
+        id: yelpData['id'],
+        countGoing: 0, // placeholders while we wait for async
+        userGoing: false
+      };
+      return bar;
+    }
+  }, {
+    key: 'updateBar',
+    value: function updateBar(bar) {
+      var _this2 = this;
+
+      d3.json('/api/oneBar/' + bar.id + '/true', function (err, json) {
+        if (err) {
+          console.log('api error');throw err;
+        }
+
+        console.log('bar 2:');
+        console.log(bar);
+        bar.countGoing = json.going_count;
+        bar.userGoing = json.user_going;
+        //hopefully changing the object in the array will be recognized properly
+        _this2.forceUpdate();
+      });
+    }
+  }, {
     key: 'renderRow',
     value: function renderRow(row, idx) {
-      var _this2 = this;
+      var _this3 = this;
 
       return React.createElement(
         'div',
         { className: 'row', key: idx },
         row.map(function (bar) {
-          return _this2.renderBar(bar);
+          return _this3.renderBar(bar);
         })
       );
     }
@@ -21281,21 +21309,21 @@ var AllBars = function (_React$Component) {
         rating: barObj.rating,
         snippet: barObj.snippet,
         url: barObj.url,
-        countGoing: barObj.count,
-        userGoing: barObj['this_user'],
-        key: barObj['react_key']
+        countGoing: barObj.countGoing,
+        userGoing: barObj.userGoing,
+        key: barObj.id
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       return React.createElement(
         'div',
         { className: 'bars-body container' },
         this.state.bars.map(function (row, idx) {
-          return _this3.renderRow(row, idx);
+          return _this4.renderRow(row, idx);
         })
       );
     }
@@ -21306,7 +21334,7 @@ var AllBars = function (_React$Component) {
 
 module.exports = AllBars;
 
-},{"./OneBar.js":183,"react":181}],183:[function(require,module,exports){
+},{"./OneBar.js":183,"d3-request":4,"react":181}],183:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21348,8 +21376,6 @@ var OneBar = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.props);
-
       return React.createElement(
         'div',
         {
@@ -21407,8 +21433,9 @@ module.exports = OneBar;
   d3.json('/api/retrieve/x', function (err, data) {
     if (err) throw err;
 
-    console.log(data);
-    ReactDOM.render(React.createElement(AllBars, { data: 'blue', yelpData: data }), document.getElementById('react-shell'));
+    d3.text('/api/this_user/', function (err, user) {
+      ReactDOM.render(React.createElement(AllBars, { user: user, yelpData: data }), document.getElementById('react-shell'));
+    });
   });
 })();
 

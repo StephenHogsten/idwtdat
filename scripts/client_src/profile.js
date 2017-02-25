@@ -7,10 +7,11 @@
   d3.json('/api/retrieve/x', (err, data) => {
     if (err) throw err;
 
-    console.log(data);
-    ReactDOM.render(
-      <AllBars data="blue" yelpData={data}/>,
-      document.getElementById('react-shell')
-    );
+    d3.text('/api/this_user/', (err, user) => {
+      ReactDOM.render(
+        <AllBars user={user} yelpData={data}/>,
+        document.getElementById('react-shell')
+      );
+    });
   });
 })();

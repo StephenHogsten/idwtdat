@@ -25,8 +25,6 @@ class OneBar extends React.Component {
     return starArr;
   }
   render() {
-    console.log(this.props);
-
     return (
       <div 
         className={"one-bar col-md-5 col-sm-5 col-xs-10"}
