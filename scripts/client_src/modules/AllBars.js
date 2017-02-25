@@ -70,7 +70,7 @@ class AllBars extends React.Component {
     bar.countGoing += (bar.userGoing)? 1: -1;
     this.forceUpdate();
     d3.request('/api/oneBar/' + encodeURIComponent(yelp_id))
-      .post(() => {console.log('posted request');});
+      .post(() => {});
   }
 
   renderRow(row, idx) {

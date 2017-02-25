@@ -56,17 +56,13 @@ module.exports = {
     });
   },
   toggleGoing: function(req, res, next) {
-    console.log('received post request');
     let user = req.session.app_user;
     if (!user) return;
-    console.log('we have a user: ' + user);
     Business.findOne({'yelp_id': req.params.yelp_id}, (err, doc) => {
       if (err) throw err;
       
-      console.log('we do not have an error');
       if (!doc) return;
       let idx = doc.users_going.indexOf(user);
-      console.log('found idx: ' + idx);
       if (idx === -1) {
         doc.total_going += 1;
         doc.users_going.push(user)
@@ -74,8 +70,6 @@ module.exports = {
         doc.total_going -= 1;
         doc.users_going.splice(idx, 1);
       }
-      console.log('post doc');
-      console.log(doc);
       doc.save( (err) => { if (err) throw err; });
     });
   }
