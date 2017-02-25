@@ -21274,13 +21274,11 @@ var AllBars = function (_React$Component) {
     value: function updateBar(bar) {
       var _this2 = this;
 
-      d3.json('/api/oneBar/' + bar.id + '/true', function (err, json) {
+      d3.json('/api/oneBar/' + encodeURIComponent(bar.id), function (err, json) {
         if (err) {
           console.log('api error');throw err;
         }
 
-        console.log('bar 2:');
-        console.log(bar);
         bar.countGoing = json.going_count;
         bar.userGoing = json.user_going;
         //hopefully changing the object in the array will be recognized properly
@@ -21295,6 +21293,7 @@ var AllBars = function (_React$Component) {
       return React.createElement(
         'div',
         { className: 'row', key: idx },
+        React.createElement('div', { className: "col-xs-1 col-sm-1 col-md-1" }),
         row.map(function (bar) {
           return _this3.renderBar(bar);
         })
@@ -21310,6 +21309,7 @@ var AllBars = function (_React$Component) {
         snippet: barObj.snippet,
         url: barObj.url,
         countGoing: barObj.countGoing,
+        showUserGoing: this.state.user ? true : false,
         userGoing: barObj.userGoing,
         key: barObj.id
       });
@@ -21374,6 +21374,21 @@ var OneBar = function (_React$Component) {
       return starArr;
     }
   }, {
+    key: 'makeUserGoing',
+    value: function makeUserGoing() {
+      if (this.props.showUserGoing) {
+        return React.createElement(
+          'span',
+          {
+            className: this.props.userGoing ? "user-going" : "user-not-going",
+            key: 'user-going' },
+          "You are " + (this.props.userGoing ? "GOING" : "NOT GOING")
+        );
+      } else {
+        return;
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
@@ -21406,11 +21421,7 @@ var OneBar = function (_React$Component) {
             { className: 'going-count', key: 'going-count' },
             'total going: ' + this.props.countGoing
           ),
-          React.createElement(
-            'span',
-            { className: 'user-going', key: 'user-going' },
-            "you are " + (this.props.userGoing ? " GOING" : "NOT GOING")
-          )
+          this.makeUserGoing()
         )
       );
     }

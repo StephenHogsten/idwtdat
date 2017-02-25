@@ -50,7 +50,7 @@ class AllBars extends React.Component {
   }
 
   updateBar(bar) {
-    d3.json('/api/oneBar/' + encodeURIComponent(bar.id) + '/true', (err, json) => {
+    d3.json('/api/oneBar/' + encodeURIComponent(bar.id), (err, json) => {
       if (err) {console.log('api error'); throw err;}
 
       bar.countGoing = json.going_count;
@@ -63,6 +63,7 @@ class AllBars extends React.Component {
   renderRow(row, idx) {
     return (
       <div className="row" key={idx}>
+        <div className={"col-xs-1 col-sm-1 col-md-1"}></div>
         {row.map((bar) => this.renderBar(bar))}
       </div>
     );
@@ -76,6 +77,7 @@ class AllBars extends React.Component {
         snippet={barObj.snippet}
         url={barObj.url}
         countGoing={barObj.countGoing}
+        showUserGoing={this.state.user? true: false}
         userGoing={barObj.userGoing}
         key={barObj.id}
       />

@@ -24,6 +24,19 @@ class OneBar extends React.Component {
     }
     return starArr;
   }
+  makeUserGoing() {
+    if (this.props.showUserGoing) {
+      return (
+        <span 
+          className={this.props.userGoing? "user-going": "user-not-going"}
+          key="user-going">
+          {"You are " + (this.props.userGoing? "GOING": "NOT GOING")}
+        </span>
+      );
+    } else {
+      return;
+    }
+  }
   render() {
     return (
       <div 
@@ -36,7 +49,7 @@ class OneBar extends React.Component {
           <span className="stars" key="stars">{this.makeStars()}</span>
           <span className="bar-subtitle" key="bar-subtitle">{this.props.snippet}</span>
           <span className="going-count" key="going-count">{'total going: ' + this.props.countGoing}</span>
-          <span className="user-going" key="user-going">{"you are " + (this.props.userGoing?" GOING": "NOT GOING")}</span>
+          {this.makeUserGoing()}
         </div>
       </div>
     )

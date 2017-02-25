@@ -20512,7 +20512,6 @@ var Baddie = function (_React$Component) {
   _createClass(Baddie, [{
     key: 'render',
     value: function render() {
-      console.log(this.props.data);
       return React.createElement(
         'h1',
         { className: 'baddie' },
