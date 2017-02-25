@@ -2,7 +2,7 @@
 
 var path = require('path');
 var businessController = require('../controllers/businessController');
-var httpPost = require('../controllers/httpPost.js');
+var httpReq = require('../controllers/httpReq.js');
 
 var base = path.join(process.cwd(), 'public', 'views');
 
@@ -13,7 +13,7 @@ function yelpToken(req, res, next) {
       client_id: process.env.YELP_APP_ID,
       client_secret: process.env.YELP_APP_SECRET
     };
-    httpPost('https://api.yelp.com/oauth2/token', yelpObj, (err, response) => {
+    httpReq.post('https://api.yelp.com/oauth2/token', yelpObj, (err, response) => {
       if (err) throw err;
       req.session.yelp_access_token = response.access_token;
       next();
@@ -38,6 +38,12 @@ module.exports = (app) => {
     res.sendFile(path.join(process.cwd(), 'junkdata.json'));
   });
   app.get('/api/get_token', businessController.getToken);
+  app.get('/api/test_yelp', yelpToken, (req, res, next) => {
+    var url = 'https://api.yelp.com/v3/businesses/search?term=delis&latitude=37.786882&longitude=-122.399972';
+    httpReq.get(url, req.session.yelp_access_token, (err, response) => {
+      res.json(response);
+    });
+  });
   app.get('/api/this_user', (req, res) => {
     res.send(req.session.app_user);
   });
