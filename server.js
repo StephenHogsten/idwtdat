@@ -10,6 +10,7 @@ var path = require('path');
 
 var routes = require('./scripts/config/routes.js');
 var passportConfig = require('./scripts/config/passport-config.js');
+var httpPost = require('./scripts/controllers/httpPost.js');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, (err) => {

@@ -2,15 +2,33 @@
 
 var path = require('path');
 var businessController = require('../controllers/businessController');
+var httpPost = require('../controllers/httpPost.js');
 
 var base = path.join(process.cwd(), 'public', 'views');
 
+function yelpToken(req, res, next) {
+  if (req.session && !req.session.hasOwnProperty('yelp_access_token')) {
+    var yelpObj = {
+      grant_type: 'client_credentials',
+      client_id: process.env.YELP_APP_ID,
+      client_secret: process.env.YELP_APP_SECRET
+    };
+    httpPost('https://api.yelp.com/oauth2/token', yelpObj, (err, response) => {
+      if (err) throw err;
+      req.session.yelp_access_token = response.access_token;
+      next();
+    });
+  } else {
+    next();
+  }
+}
+
 module.exports = (app) => {
-  app.get('/', (req, res) => {
+  app.get('/', yelpToken, (req, res) => {
     res.sendFile(path.join(base, 'landing.html'));
   });
   
-  app.get('/profile', (req, res) => {
+  app.get('/profile', yelpToken, (req, res) => {
     req.session.app_user = 'hogdog123'; //just for testing
     res.sendFile(path.join(base, 'profile.html'));
   });
