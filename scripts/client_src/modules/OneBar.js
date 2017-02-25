@@ -27,11 +27,14 @@ class OneBar extends React.Component {
   makeUserGoing() {
     if (this.props.showUserGoing) {
       return (
-        <span 
+        <div 
           className={this.props.userGoing? "user-going": "user-not-going"}
-          key="user-going">
+          key="user-going"
+          onClick={this.props.toggleFn}
+        >
           {"You are " + (this.props.userGoing? "GOING": "NOT GOING")}
-        </span>
+          
+        </div>
       );
     } else {
       return;

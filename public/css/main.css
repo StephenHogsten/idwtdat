@@ -43,7 +43,12 @@ body {
   color: CornSilk; }
 
 .user-going {
-  color: CornSilk; }
+  color: CornSilk;
+  background-color: DarkOliveGreen; }
+
+.user-not-going {
+  color: CornSilk;
+  background-color: DarkOliveGreen; }
 
 #bar-1 {
   background-image: url("/public/img/rm1.jpg"); }

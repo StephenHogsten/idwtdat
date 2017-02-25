@@ -10,7 +10,7 @@ module.exports = {
     // and then we will return 
     //  the count of users going
     //  whether the current user is going
-    console.log('--' + req.params.yelp_id + '--');
+    // console.log('--' + req.params.yelp_id + '--');
     Business.findOne({'yelp_id': req.params.yelp_id}, (err, doc) => {
       if (err) throw err;
 
@@ -21,20 +21,20 @@ module.exports = {
         'user_going': false
       };
       if (doc) {
-        console.log('found bar');
+        // console.log('found bar');
         let a = new Date(doc.last_date);
         // it exists but we don't know if it's outdated
         if (now.valueOf() == (new Date(doc.last_date)).valueOf()) {
-          console.log(' correct time');
-          console.log(doc);
+          // console.log(' correct time');
+          // console.log(doc);
           // we're using today
           res.json({
             'going_count': doc.total_going,
             'user_going':  doc.users_going.includes(req.session.app_user)
           });
         } else {
-          console.log(' wrong time');
-          console.log(doc);
+          // console.log(' wrong time');
+          // console.log(doc);
           // we're wiping out the bar's users
           doc.users_going = [];
           doc.total_going = 0;
@@ -43,7 +43,7 @@ module.exports = {
           res.json(empty);
         }
       } else {
-        console.log('bar not found');
+        // console.log('bar not found');
         // create a new yelp doc
         new Business({
           "yelp_id": req.params.yelp_id,
@@ -56,19 +56,27 @@ module.exports = {
     });
   },
   toggleGoing: function(req, res, next) {
+    console.log('received post request');
     let user = req.session.app_user;
     if (!user) return;
-    Business.find({'yelp_id': req.params.yelp_id}, (err, doc) => {
+    console.log('we have a user: ' + user);
+    Business.findOne({'yelp_id': req.params.yelp_id}, (err, doc) => {
       if (err) throw err;
       
+      console.log('we do not have an error');
+      if (!doc) return;
       let idx = doc.users_going.indexOf(user);
+      console.log('found idx: ' + idx);
       if (idx === -1) {
         doc.total_going += 1;
         doc.users_going.push(user)
       } else {
         doc.total_going -= 1;
-        doc.users_going[idx];
+        doc.users_going.splice(idx, 1);
       }
+      console.log('post doc');
+      console.log(doc);
+      doc.save( (err) => { if (err) throw err; });
     });
   }
 }

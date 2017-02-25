@@ -11,7 +11,7 @@ module.exports = (app) => {
   });
   
   app.get('/profile', (req, res) => {
-    // req.session.app_user = 'hogdog123'; //just for testing
+    req.session.app_user = 'hogdog123'; //just for testing
     res.sendFile(path.join(base, 'profile.html'));
   });
 
@@ -24,5 +24,5 @@ module.exports = (app) => {
   });
   app.route('/api/oneBar/:yelp_id')
     .get(businessController.getBar)
-    .put(businessController.toggleGoing);
+    .post(businessController.toggleGoing);
 };

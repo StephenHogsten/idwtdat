@@ -21214,6 +21214,7 @@ var AllBars = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (AllBars.__proto__ || Object.getPrototypeOf(AllBars)).call(this, props));
 
     var allRows = [];
+    var barDict = {};
     var bar = void 0,
         row = void 0;
 
@@ -21233,6 +21234,7 @@ var AllBars = function (_React$Component) {
 
     for (var i = 0, l = Math.min(businesses.length, 20); i < l; i++) {
       bar = _this.parseBar(businesses[i]);
+      barDict[bar.id] = bar;
       _this.updateBar(bar);
       // add to array for state
       if (i % 2 === 0) {
@@ -21248,6 +21250,7 @@ var AllBars = function (_React$Component) {
 
     _this.state = {
       bars: allRows,
+      barDict: barDict,
       user: props.user
     };
     return _this;
@@ -21286,6 +21289,18 @@ var AllBars = function (_React$Component) {
       });
     }
   }, {
+    key: 'toggleUserGoing',
+    value: function toggleUserGoing(yelp_id) {
+      var bar = this.state.barDict[yelp_id];
+      if (!bar) return;
+      bar.userGoing = !bar.userGoing;
+      bar.countGoing += bar.userGoing ? 1 : -1;
+      this.forceUpdate();
+      d3.request('/api/oneBar/' + encodeURIComponent(yelp_id)).post(function () {
+        console.log('posted request');
+      });
+    }
+  }, {
     key: 'renderRow',
     value: function renderRow(row, idx) {
       var _this3 = this;
@@ -21302,6 +21317,8 @@ var AllBars = function (_React$Component) {
   }, {
     key: 'renderBar',
     value: function renderBar(barObj) {
+      var _this4 = this;
+
       return React.createElement(OneBar, {
         title: barObj.title,
         image: barObj.image,
@@ -21311,19 +21328,22 @@ var AllBars = function (_React$Component) {
         countGoing: barObj.countGoing,
         showUserGoing: this.state.user ? true : false,
         userGoing: barObj.userGoing,
-        key: barObj.id
+        key: barObj.id,
+        toggleFn: function toggleFn() {
+          return _this4.toggleUserGoing(barObj.id);
+        }
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       return React.createElement(
         'div',
         { className: 'bars-body container' },
         this.state.bars.map(function (row, idx) {
-          return _this4.renderRow(row, idx);
+          return _this5.renderRow(row, idx);
         })
       );
     }
@@ -21378,10 +21398,12 @@ var OneBar = function (_React$Component) {
     value: function makeUserGoing() {
       if (this.props.showUserGoing) {
         return React.createElement(
-          'span',
+          'div',
           {
             className: this.props.userGoing ? "user-going" : "user-not-going",
-            key: 'user-going' },
+            key: 'user-going',
+            onClick: this.props.toggleFn
+          },
           "You are " + (this.props.userGoing ? "GOING" : "NOT GOING")
         );
       } else {

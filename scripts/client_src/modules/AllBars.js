@@ -8,6 +8,7 @@ class AllBars extends React.Component {
   constructor(props) {
     super(props);
     var allRows = [];
+    var barDict = {};
     let bar, row;
     
     //edge-y cases
@@ -18,6 +19,7 @@ class AllBars extends React.Component {
 
     for (var i=0, l=Math.min(businesses.length, 20); i<l; i++) {
       bar = this.parseBar(businesses[i]);
+      barDict[bar.id] = bar;
       this.updateBar(bar);
       // add to array for state
       if (i%2 === 0) { row = [bar]; } 
@@ -30,6 +32,7 @@ class AllBars extends React.Component {
 
     this.state = {
       bars: allRows,
+      barDict: barDict,
       user: props.user
     };
   }
@@ -60,6 +63,16 @@ class AllBars extends React.Component {
     });
   }
 
+  toggleUserGoing(yelp_id) {
+    let bar = this.state.barDict[yelp_id];
+    if (!bar) return;
+    bar.userGoing = !bar.userGoing;
+    bar.countGoing += (bar.userGoing)? 1: -1;
+    this.forceUpdate();
+    d3.request('/api/oneBar/' + encodeURIComponent(yelp_id))
+      .post(() => {console.log('posted request');});
+  }
+
   renderRow(row, idx) {
     return (
       <div className="row" key={idx}>
@@ -80,6 +93,7 @@ class AllBars extends React.Component {
         showUserGoing={this.state.user? true: false}
         userGoing={barObj.userGoing}
         key={barObj.id}
+        toggleFn={() => this.toggleUserGoing(barObj.id)}
       />
     );
   }

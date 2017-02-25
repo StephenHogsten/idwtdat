@@ -59,6 +59,11 @@ body {
 }
 .user-going {
   color: $primary-text;
+  background-color: $primary;
+}
+.user-not-going {
+  color: $primary-text;
+  background-color: $primary;
 }
 
 #bar-1 {
