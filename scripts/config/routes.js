@@ -20,8 +20,6 @@ module.exports = (app) => {
     res.sendFile(path.join(process.cwd(), 'junkdata.json'));
   });
   app.get('/api/this_user', (req, res) => {
-    console.log('my session: ');
-    console.log(req.session);
     res.send(req.session.app_user);
   });
   app.route('/api/oneBar/:id/:check_date')

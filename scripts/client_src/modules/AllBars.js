@@ -50,11 +50,9 @@ class AllBars extends React.Component {
   }
 
   updateBar(bar) {
-    d3.json('/api/oneBar/' + bar.id + '/true', (err, json) => {
+    d3.json('/api/oneBar/' + encodeURIComponent(bar.id) + '/true', (err, json) => {
       if (err) {console.log('api error'); throw err;}
 
-      console.log('bar 2:');
-      console.log(bar);
       bar.countGoing = json.going_count;
       bar.userGoing = json.user_going;    
       //hopefully changing the object in the array will be recognized properly

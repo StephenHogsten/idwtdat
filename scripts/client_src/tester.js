@@ -3,7 +3,6 @@ const ReactDOM = require('react-dom');
 
 class Baddie extends React.Component {
   render() {
-    console.log(this.props.data);
     return (
       <h1 className="baddie">{this.props.data.toString()}</h1>
     );
