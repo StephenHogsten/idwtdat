@@ -30,13 +30,43 @@ module.exports = (app) => {
   
   app.get('/profile', yelpToken, (req, res) => {
     req.session.app_user = 'hogdog123'; //just for testing
+    // req.session.location = { name: 'chicago' };
+    // req.session.location = { lat: 40.8, lon: -73.9 };
+    console.log(req.session);
     res.sendFile(path.join(base, 'profile.html'));
+  });
+
+  app.get('/location/name/:name', (req, res, next) => {
+    req.session.location = { name: req.params.name };
+    res.redirect('/profile');
+  });
+
+  app.get('/location/latlon/:lat/:lon', (req, res, next) => {
+    req.session.location = { lat: req.params.lat, lon: req.params.lon };
+    res.redirect('/profile');
   });
 
   // APIs
   app.get('/api/retrieve/:location', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'junkdata.json'));
   });
+  app.route('/api/location_data')
+    .get((req, res) => {
+      if (!req.session) { console.log("req.session not found"); }
+      else if (!req.session.location) { console.log("req.session.location not found"); }
+      else {
+        let url = 'https://api.yelp.com/v3/businesses/search?categories=bars';
+        if (req.session.location.name) {
+          url += '&location=' + req.session.location.name;
+        } else if (req.session.location.lat && req.session.location.lon) {
+          url += '&latitude=' + req.session.location.lat;
+          url += '&longitude=' + req.session.location.lon;
+        }
+        httpReq.get(url, req.session.yelp_access_token, (err, response) => {
+          res.json(response);
+        });
+      }
+    });
   app.get('/api/get_token', businessController.getToken);
   app.get('/api/test_yelp', yelpToken, (req, res, next) => {
     var url = 'https://api.yelp.com/v3/businesses/search?term=delis&latitude=37.786882&longitude=-122.399972';

@@ -21296,9 +21296,7 @@ var AllBars = function (_React$Component) {
       bar.userGoing = !bar.userGoing;
       bar.countGoing += bar.userGoing ? 1 : -1;
       this.forceUpdate();
-      d3.request('/api/oneBar/' + encodeURIComponent(yelp_id)).post(function () {
-        console.log('posted request');
-      });
+      d3.request('/api/oneBar/' + encodeURIComponent(yelp_id)).post(function () {});
     }
   }, {
     key: 'renderRow',
@@ -21435,11 +21433,6 @@ var OneBar = function (_React$Component) {
           ),
           React.createElement(
             'span',
-            { className: 'bar-subtitle', key: 'bar-subtitle' },
-            this.props.snippet
-          ),
-          React.createElement(
-            'span',
             { className: 'going-count', key: 'going-count' },
             'total going: ' + this.props.countGoing
           ),
@@ -21463,7 +21456,7 @@ module.exports = OneBar;
   var React = require('react');
   var ReactDOM = require('react-dom');
 
-  d3.json('/api/retrieve/x', function (err, data) {
+  d3.json('/api/location_data', function (err, data) {
     if (err) throw err;
 
     d3.text('/api/this_user/', function (err, user) {

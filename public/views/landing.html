@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Landing page</title>
+  <link rel="stylesheet" href="public/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/public/css/main.css">
 </head>
-<body>
+<body style="background-color: yellow">
   <h1>Welcome!</h1>
   <p>I am the glorious landing page!</p>
-  <input id='location-search' type="text" placeholder="where are you"></input>
-  <a href='/profile'><button type="button" id='search-btn' class='btn btn-primary'>Search</button></a>
+  <input id='location-search' type="text" placeholder="where are you">
+    <i class='fa fa-location-arrow' id='location-get'></i>
+  </input>
+  <button type="button" id='search-btn' class='btn btn-primary'>Search</button>
+  <script src="/client/landing.js"></script>
 </body>
 </html>

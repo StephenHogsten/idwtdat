@@ -18,19 +18,19 @@ body {
 .one-bar {
   background-color: DarkSeaGreen;
   background-size: cover;
-  height: 220px;
+  height: 300px;
   position: relative;
   padding: 0px; }
 
 .bar-fade {
-  height: 220px;
+  height: 300px;
   background: linear-gradient(rgba(0, 0, 0, 0.2) 40%, black 100%);
   margin: 0px;
   z-index: 100; }
 
 .bar-info-container {
   position: relative;
-  top: -110px; }
+  top: -150px; }
 
 .bar-title {
   color: CornSilk;

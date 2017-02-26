@@ -2,7 +2,7 @@ $green: rgb(0,232, 0);
 $primary: DarkOliveGreen;
 $secondary: DarkSeaGreen;
 $primary-text: CornSilk;
-$bar-box-height: 220;
+$bar-box-height: 300;
 
 body {
   background-color: black;
@@ -59,7 +59,7 @@ body {
 }
 .user-going {
   color: $primary-text;
-  background-color: $primary;
+  background-color: $green;
 }
 .user-not-going {
   color: $primary-text;

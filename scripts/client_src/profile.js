@@ -4,7 +4,7 @@
   const React = require('react');
   const ReactDOM = require('react-dom');
 
-  d3.json('/api/retrieve/x', (err, data) => {
+  d3.json('/api/location_data', (err, data) => {
     if (err) throw err;
 
     d3.text('/api/this_user/', (err, user) => {
