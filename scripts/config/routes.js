@@ -30,9 +30,7 @@ module.exports = (app) => {
   
   app.get('/profile', yelpToken, (req, res) => {
     req.session.app_user = 'hogdog123'; //just for testing
-    // req.session.location = { name: 'chicago' };
-    // req.session.location = { lat: 40.8, lon: -73.9 };
-    console.log(req.session);
+    // console.log(req.session);
     res.sendFile(path.join(base, 'profile.html'));
   });
 
@@ -78,7 +76,6 @@ module.exports = (app) => {
     res.send(req.session.app_user);
   });
   app.post('/api/test', (req, res) => {
-    console.log(req);
     res.send(req.body);
   })
   app.route('/api/oneBar/:yelp_id')

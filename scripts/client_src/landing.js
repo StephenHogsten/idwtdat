@@ -7,6 +7,7 @@ searchSubmit.onclick = () => {
   if (!text) {
     // show an error div later
     console.log('no search text');
+    return;
   }
   // save the location to the session
   window.location.href = '/location/name/' + text;

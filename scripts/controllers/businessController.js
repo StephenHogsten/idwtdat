@@ -82,7 +82,6 @@ module.exports = {
     };
     httpReq.post('https://api.yelp.com/oauth2/token', yelpObj, (err, response) => {
       res.send(response);
-      console.log(JSON.stringify(response));
     });
   }
 }
