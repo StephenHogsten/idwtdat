@@ -3,9 +3,9 @@
 require('dotenv').config();
 var express = require('express');
 var session = require('express-session');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var MongoStore = require('connect-mongo')(session);
 var path = require('path');
 
 var routes = require('./scripts/config/routes.js');
@@ -24,8 +24,16 @@ app.use('/client', express.static(path.join(__dirname, 'scripts', 'client')));
 app.use(session({
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  secret: 'woskpoo',
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection
+  }),
+  cookie: {
+    secure: (process.env.ENV_TYPE === 'PRODUCTION')
+  }
 }));
+
 app.use(bodyParser.urlencoded({extended: false}));
 
 routes(app);
