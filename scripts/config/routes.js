@@ -55,7 +55,7 @@ module.exports = (app) => {
       else {
         let url = 'https://api.yelp.com/v3/businesses/search?categories=bars';
         if (req.session.location.name) {
-          url += '&location=' + req.session.location.name;
+          url += '&location=' + encodeURIComponent(req.session.location.name);
         } else if (req.session.location.lat && req.session.location.lon) {
           url += '&latitude=' + req.session.location.lat;
           url += '&longitude=' + req.session.location.lon;
