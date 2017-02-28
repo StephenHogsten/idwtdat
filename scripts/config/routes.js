@@ -1,6 +1,8 @@
 'use strict';
 
 var path = require('path');
+var http = require('http');
+var querystring = require('querystring');
 var businessController = require('../controllers/businessController');
 var httpReq = require('../controllers/httpReq.js');
 
@@ -23,9 +25,19 @@ function yelpToken(req, res, next) {
   }
 }
 
+function errorRedirect(res, message) {
+  res.redirect('/error/' + encodeURIComponent(message));
+}
+
 module.exports = (app) => {
   app.get('/', yelpToken, (req, res) => {
     res.sendFile(path.join(base, 'landing.html'));
+  });
+
+  app.get('/error/:message', (req, res) => {
+    res.json({
+      error: decodeURIComponent(req.params.message)
+    });
   });
   
   app.get('/profile', yelpToken, (req, res) => {
@@ -71,6 +83,37 @@ module.exports = (app) => {
     httpReq.get(url, req.session.yelp_access_token, (err, response) => {
       res.json(response);
     });
+  });
+  app.get('/api/test_twitter', (req, res, next) => {
+    // step 1, get request access token
+    var reqUrl = 'https://api.twitter.com/oauth/request_token'
+    httpReq.auth(reqUrl, 'POST', {
+      oauth_consumer_key: process.env.TWITTER_APP_ID,
+      oauth_callback: 'http://127.0.0.1:3000/api/callback/'
+    }, [process.env.TWITTER_APP_SECRET], (err, reqResponse) => {
+      if (err) { errorRedirect(res, 'access token request failed'); }
+      var reqResponse = querystring.parse(reqResponse);
+      console.log(reqResponse);
+      if (!reqResponse.oauth_callback_confirmed) { errorRedirect(res, 'access token request failed - oauth_call_confirmed is false'); }
+      console.log('step 1 complete');
+      // step 2, redirect user
+      reqUrl = 'https://api.twitter.com/oauth/authenticate/?oauth_token=' + reqResponse.oauth_token;
+      console.log('reqUrl: '+ reqUrl);
+      httpReq.auth(reqUrl, 'POST', {
+        oauth_consumer_key: process.env.TWITTER_APP_ID,
+        oauth_callback: 'http://127.0.0.1:3000/api/callback/',
+        oauth_token: reqResponse.oauth_token,
+        oauth_callback_confirmed: reqResponse.oauth_callback_confirmed
+      }, [process.env.TWITTER_APP_SECRET, reqResponse.oauth_token_secret], (err, redirResponse) => {
+        console.log('should have redirected...');
+        console.log(redirResponse);
+        res.send(redirResponse);
+      });
+    });
+  });
+  app.get('/api/callback', (req, res) => {
+    console.log(req.query);
+    res.json(req.query);
   });
   app.get('/api/this_user', (req, res) => {
     res.send(req.session.app_user);
