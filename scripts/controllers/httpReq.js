@@ -98,6 +98,7 @@ function collapseAuthHeader(authParams) {
     'oauth_signature_method',
     'oauth_timestamp',
     'oauth_token',
+    'oauth_verifier',
     'oauth_version'
   ];
   let paramArr = [];
@@ -158,12 +159,14 @@ module.exports = {
     req.end();
   },
   signSHA1: signSHA1,
-  auth: (queryUrl, method, oauthParams, secretParams, cb) => {
+  auth: (queryUrl, method, oauthParams, secretParams, cb, send) => {
     let response = [];
     let options = signSHA1(method, queryUrl, oauthParams, secretParams);
+    if (send) {
+      options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      options.headers['Content-Length'] = send.length;
+    }
     var req = http.request(options, (res) => {
-      console.log('response:');
-      console.log(res);
       res.on('data', (chunk) => {
         response.push(chunk.toString());
       });
@@ -171,6 +174,9 @@ module.exports = {
         cb( null, response.join(''));
       });
     });
+    if (send) {
+      req.write(send);
+    }
     req.end();
   },
   encode: encodeURI3986,

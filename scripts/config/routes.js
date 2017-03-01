@@ -31,7 +31,11 @@ function errorRedirect(res, message) {
 
 module.exports = (app) => {
   app.get('/', yelpToken, (req, res) => {
-    res.sendFile(path.join(base, 'landing.html'));
+    if (req.session.hasOwnProperty('location')) {
+      res.redirect('/profile');
+    } else {
+      res.sendFile(path.join(base, 'landing.html'));
+    }
   });
 
   app.get('/error/:message', (req, res) => {
@@ -41,11 +45,10 @@ module.exports = (app) => {
   });
   
   app.get('/profile', yelpToken, (req, res) => {
-    req.session.app_user = 'hogdog123'; //just for testing
-    // console.log(req.session);
     res.sendFile(path.join(base, 'profile.html'));
   });
 
+  // not sure if it makes more sense for these to be /API/...
   app.get('/location/name/:name', (req, res, next) => {
     req.session.location = { name: req.params.name };
     res.redirect('/profile');
@@ -55,6 +58,7 @@ module.exports = (app) => {
     req.session.location = { lat: req.params.lat, lon: req.params.lon };
     res.redirect('/profile');
   });
+
 
   // APIs
   app.get('/api/retrieve/:location', (req, res) => {
@@ -98,23 +102,65 @@ module.exports = (app) => {
       console.log('step 1 complete');
       // step 2, redirect user
       reqUrl = 'https://api.twitter.com/oauth/authenticate/?oauth_token=' + reqResponse.oauth_token;
-      console.log('reqUrl: '+ reqUrl);
-      httpReq.auth(reqUrl, 'POST', {
-        oauth_consumer_key: process.env.TWITTER_APP_ID,
-        oauth_callback: 'http://127.0.0.1:3000/api/callback/',
-        oauth_token: reqResponse.oauth_token,
-        oauth_callback_confirmed: reqResponse.oauth_callback_confirmed
-      }, [process.env.TWITTER_APP_SECRET, reqResponse.oauth_token_secret], (err, redirResponse) => {
-        console.log('should have redirected...');
-        console.log(redirResponse);
-        res.send(redirResponse);
-      });
+      req.session.tmp_request_token = reqResponse.oauth_token;
+      // should the secret be stored off under user in DB?
+      req.session.tmp_request_token_secret = reqResponse.oauth_token_secret;
+      res.redirect(reqUrl);
     });
   });
-  app.get('/api/callback', (req, res) => {
-    console.log(req.query);
-    res.json(req.query);
+  app.get('/api/twitter_user', (req, res) => {
+    if (!req.session.hasOwnProperty('Twitter')) {
+      errorRedirect(res, 'no twitter session info');
+      return; 
+    }
+    httpReq.auth(
+      'https://api.twitter.com/1.1/account/verify_credentials.json',
+      'GET',
+      {
+        oauth_consumer_key: process.env.TWITTER_APP_ID,
+        oauth_token: req.session.Twitter.oauth_token
+      },
+      [
+        process.env.TWITTER_APP_SECRET,
+        req.session.Twitter.oauth_token_secret
+      ],
+      (err, response) => {
+        res.json(JSON.parse(response));
+      }
+    )
   });
+  app.get('/api/callback', (req, res) => {
+    if (req.query.oauth_token != req.session.tmp_request_token) {
+      errorRedirect(res, 'token does not match');
+      return;
+    }
+    console.log('step 2 complete');
+    // step 3, exchange my current keys for actual user keys
+    httpReq.auth(
+      'https://api.twitter.com/oauth/access_token',
+      'POST',
+      {
+        oauth_consumer_key: process.env.TWITTER_APP_ID,
+        oauth_token: req.query.oauth_token,
+        oauth_verifier: req.query.oauth_verifier
+      },
+      [process.env.TWITTER_APP_SECRET],
+      (err, finalResponse) => {
+        console.log('step 3 complete');
+        delete req.session.tmp_request_token;
+        delete req.session.tmp_request_token_secret;
+        finalResponse = querystring.parse(finalResponse);
+        req.session.Twitter = {};
+        ['oauth_token', 'oauth_token_secret', 'user_id', 'screen_name'].forEach( (key) => {
+          req.session.Twitter[key] = finalResponse[key];
+        });
+        res.redirect('/api/this_session');
+      }
+    );
+  });
+  app.get('/api/this_session', (req, res) => {
+    res.json(req.session);
+  })
   app.get('/api/this_user', (req, res) => {
     res.send(req.session.app_user);
   });
