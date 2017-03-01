@@ -21306,7 +21306,7 @@ var AllBars = function (_React$Component) {
       return React.createElement(
         'div',
         { className: 'row', key: idx },
-        React.createElement('div', { className: "col-xs-1 col-sm-1 col-md-1" }),
+        React.createElement('div', { className: "col-sm-1 col-md-1" }),
         row.map(function (bar) {
           return _this3.renderBar(bar);
         })
@@ -21414,7 +21414,7 @@ var OneBar = function (_React$Component) {
       return React.createElement(
         'div',
         {
-          className: "one-bar col-md-5 col-sm-5 col-xs-10",
+          className: 'one-bar col-md-5 col-sm-5 col-xs-12',
           style: { backgroundImage: 'url(' + this.props.image + ')' }
         },
         React.createElement('div', { className: 'bar-fade', key: 'bar-fade' }),
@@ -21450,19 +21450,47 @@ module.exports = OneBar;
 },{"react":181}],184:[function(require,module,exports){
 'use strict';
 
+var d3 = require('d3-request');
+
+module.exports = function (user, location) {
+  var loginBtn = document.getElementById('login-btn');
+  if (user) {
+    console.log('we have a user');
+    loginBtn.innerHTML = 'Log Out';
+    // log them out when clicked
+    loginBtn.onclick = function () {
+      window.location.pathname = '/api/logout';
+    };
+  } else {
+    console.log('we have no user');
+    // log them in when clicked
+    loginBtn.onclick = function () {
+      window.open('/api/login_twitter');
+    };
+  }
+};
+
+},{"d3-request":4}],185:[function(require,module,exports){
+'use strict';
+
 (function () {
   var d3 = require('d3-request');
-  var AllBars = require('./modules/AllBars.js');
   var React = require('react');
   var ReactDOM = require('react-dom');
 
-  d3.json('/api/location_data', function (err, data) {
+  var AllBars = require('./modules/AllBars.js');
+  var topNav = require('./modules/topNav.js');
+
+  d3.text('/api/this_user/', function (err, user) {
     if (err) throw err;
 
-    d3.text('/api/this_user/', function (err, user) {
+    topNav(user);
+    d3.json('/api/location_data', function (err, data) {
+      if (err) throw err;
+
       ReactDOM.render(React.createElement(AllBars, { user: user, yelpData: data }), document.getElementById('react-shell'));
     });
   });
 })();
 
-},{"./modules/AllBars.js":182,"d3-request":4,"react":181,"react-dom":30}]},{},[184]);
+},{"./modules/AllBars.js":182,"./modules/topNav.js":184,"d3-request":4,"react":181,"react-dom":30}]},{},[185]);

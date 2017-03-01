@@ -50,6 +50,9 @@ body {
   color: CornSilk;
   background-color: DarkOliveGreen; }
 
+.hidden {
+  display: none; }
+
 #bar-1 {
   background-image: url("/public/img/rm1.jpg"); }
 

@@ -76,7 +76,7 @@ class AllBars extends React.Component {
   renderRow(row, idx) {
     return (
       <div className="row" key={idx}>
-        <div className={"col-xs-1 col-sm-1 col-md-1"}></div>
+        <div className={"col-sm-1 col-md-1"}></div>
         {row.map((bar) => this.renderBar(bar))}
       </div>
     );

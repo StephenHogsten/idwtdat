@@ -34,7 +34,7 @@ module.exports = (app) => {
     if (req.session.hasOwnProperty('location')) {
       res.redirect('/profile');
     } else {
-      res.sendFile(path.join(base, 'landing.html'));
+      res.redirect('/home');
     }
   });
 
@@ -46,6 +46,10 @@ module.exports = (app) => {
   
   app.get('/profile', yelpToken, (req, res) => {
     res.sendFile(path.join(base, 'profile.html'));
+  });
+
+  app.get('/home', yelpToken, (req, res) => {
+    res.sendFile(path.join(base, 'landing.html'));
   });
 
   // not sure if it makes more sense for these to be /API/...
@@ -82,13 +86,7 @@ module.exports = (app) => {
       }
     });
   app.get('/api/get_token', businessController.getToken);
-  app.get('/api/test_yelp', yelpToken, (req, res, next) => {
-    var url = 'https://api.yelp.com/v3/businesses/search?term=delis&latitude=37.786882&longitude=-122.399972';
-    httpReq.get(url, req.session.yelp_access_token, (err, response) => {
-      res.json(response);
-    });
-  });
-  app.get('/api/test_twitter', (req, res, next) => {
+  app.get('/api/login_twitter', (req, res, next) => {
     // step 1, get request access token
     var reqUrl = 'https://api.twitter.com/oauth/request_token'
     httpReq.auth(reqUrl, 'POST', {
@@ -129,6 +127,13 @@ module.exports = (app) => {
       }
     )
   });
+  app.get('/api/this_user', (req, res) => {
+    res.send(
+      (req.session.hasOwnProperty('Twitter'))? 
+      req.session.Twitter.user_id:
+      null
+    );
+  });
   app.get('/api/callback', (req, res) => {
     if (req.query.oauth_token != req.session.tmp_request_token) {
       errorRedirect(res, 'token does not match');
@@ -154,19 +159,20 @@ module.exports = (app) => {
         ['oauth_token', 'oauth_token_secret', 'user_id', 'screen_name'].forEach( (key) => {
           req.session.Twitter[key] = finalResponse[key];
         });
-        res.redirect('/api/this_session');
+        res.redirect('/api/close_window');
       }
     );
   });
+  app.get('/api/close_window', (req, res) => {
+    res.sendFile(path.join(base, 'closeWindow.html'));
+  });
+  app.get('/api/logout', (req, res) => {
+    delete req.session.Twitter;
+    res.redirect('/');
+  })
   app.get('/api/this_session', (req, res) => {
     res.json(req.session);
-  })
-  app.get('/api/this_user', (req, res) => {
-    res.send(req.session.app_user);
   });
-  app.post('/api/test', (req, res) => {
-    res.send(req.body);
-  })
   app.route('/api/oneBar/:yelp_id')
     .get(businessController.getBar)
     .post(businessController.toggleGoing);

@@ -66,6 +66,10 @@ body {
   background-color: $primary;
 }
 
+.hidden {
+  display: none;
+}
+
 #bar-1 {
   background-image: url("/public/img/rm1.jpg")
 }
