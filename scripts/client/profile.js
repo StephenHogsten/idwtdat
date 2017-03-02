@@ -21452,7 +21452,7 @@ module.exports = OneBar;
 
 var d3 = require('d3-request');
 
-module.exports = function (user, location) {
+module.exports = function (user, hideLocation) {
   var loginBtn = document.getElementById('login-btn');
   if (user) {
     console.log('we have a user');
@@ -21467,6 +21467,10 @@ module.exports = function (user, location) {
     loginBtn.onclick = function () {
       window.open('/api/login_twitter');
     };
+  }
+
+  if (hideLocation) {
+    document.getElementById('li-location').remove();
   }
 };
 

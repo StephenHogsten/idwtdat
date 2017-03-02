@@ -12,6 +12,21 @@ body {
   color: $primary-text;
 }
 
+.my-header {
+  color: $primary-text;
+  font-family: 'Dosis', sans-serif;
+}
+
+.my-sub-header {
+  color: $primary-text;
+  font-family: 'Dosis', sans-serif;
+}
+
+.navbar-inverse {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .standard-round {
   border-radius: 4px;
   margin: 5px;
@@ -24,6 +39,10 @@ body {
 .footer {
   background-color: $secondary;
   color: $primary-text;
+}
+
+.container {
+  margin: 5px;
 }
 
 .one-bar {

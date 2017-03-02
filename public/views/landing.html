@@ -3,16 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Landing page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="public/css/font-awesome.min.css">
   <link rel="stylesheet" href="/public/css/main.css">
+  <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
 </head>
-<body style="background-color: yellow">
-  <h1>Welcome!</h1>
-  <p>I am the glorious landing page!</p>
-  <input id='location-search' type="text" placeholder="where are you">
-    <i class='fa fa-location-arrow' id='location-get'></i>
-  </input>
-  <button type="button" id='search-btn' class='btn btn-primary'>Search</button>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <p class="navbar-brand">idon'twanttodrinkalonetonight.</p>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li id='li-location'><a href='/home'>Search Locations</a></li>
+        <li><a href="#" id='login-btn'>Login</span> <i class='fa fa-twitter'></i></a>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1 class='my-header'>Hi there!</h1>
+    <p class='my-sub-header'>Web devs don't let web users drink alone</p>
+    <input id='location-search' type="text" placeholder="where you at, friendo?">
+      <i class='fa fa-location-arrow' id='location-get'></i>
+    </input>
+    <button type="button" id='search-btn' class='btn btn-primary'>Cheers</button>
+  </div>
   <script src="/client/landing.js"></script>
 </body>
 </html>

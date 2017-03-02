@@ -30,6 +30,9 @@ function errorRedirect(res, message) {
 }
 
 module.exports = (app) => {
+  app.get('/vanilla', (req, res) => {
+    res.sendFile(path.join(base, "landing.html"));
+  })
   app.get('/', yelpToken, (req, res) => {
     if (req.session.hasOwnProperty('location')) {
       res.redirect('/profile');
@@ -91,7 +94,7 @@ module.exports = (app) => {
     var reqUrl = 'https://api.twitter.com/oauth/request_token'
     httpReq.auth(reqUrl, 'POST', {
       oauth_consumer_key: process.env.TWITTER_APP_ID,
-      oauth_callback: 'http://127.0.0.1:3000/api/callback/'
+      oauth_callback: process.env.URL_BASE + '/api/callback/'
     }, [process.env.TWITTER_APP_SECRET], (err, reqResponse) => {
       if (err) { errorRedirect(res, 'access token request failed'); }
       var reqResponse = querystring.parse(reqResponse);
@@ -131,8 +134,9 @@ module.exports = (app) => {
     res.send(
       (req.session.hasOwnProperty('Twitter'))? 
       req.session.Twitter.user_id:
-      null
+      ""
     );
+    res.end();
   });
   app.get('/api/callback', (req, res) => {
     if (req.query.oauth_token != req.session.tmp_request_token) {

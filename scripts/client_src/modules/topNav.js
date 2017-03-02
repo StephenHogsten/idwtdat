@@ -1,6 +1,6 @@
-const d3 = require('d3-request');
+var d3 = require('d3-request');
 
-module.exports = (user, location) => {
+module.exports = (user, hideLocation) => {
   let loginBtn = document.getElementById('login-btn');
   if (user) {
     console.log('we have a user');
@@ -15,5 +15,9 @@ module.exports = (user, location) => {
     loginBtn.onclick = () => {
       window.open('/api/login_twitter');
     };
+  }
+
+  if (hideLocation) {
+    document.getElementById('li-location').remove();
   }
 };

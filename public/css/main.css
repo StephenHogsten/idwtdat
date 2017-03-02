@@ -4,6 +4,18 @@ body {
 .fa {
   color: CornSilk; }
 
+.my-header {
+  color: CornSilk;
+  font-family: 'Dosis', sans-serif; }
+
+.my-sub-header {
+  color: CornSilk;
+  font-family: 'Dosis', sans-serif; }
+
+.navbar-inverse {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0; }
+
 .standard-round, .one-bar {
   border-radius: 4px;
   margin: 5px; }
@@ -14,6 +26,9 @@ body {
 .footer {
   background-color: DarkSeaGreen;
   color: CornSilk; }
+
+.container {
+  margin: 5px; }
 
 .one-bar {
   background-color: DarkSeaGreen;
