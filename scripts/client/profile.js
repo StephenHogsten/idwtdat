@@ -21220,16 +21220,19 @@ var AllBars = function (_React$Component) {
 
     //edge-y cases
     if (!props.yelpData) {
-      console.log('no yelp data found');return _possibleConstructorReturn(_this);
-    } // probably should handle better
+      _this.noBars('no yelp data found');return _possibleConstructorReturn(_this);
+    }
+    if (props.yelpData.hasOwnProperty('error')) {
+      _this.noBars(props.yelpData.error.code + ': ' + props.yelpData.error.description);return _possibleConstructorReturn(_this);
+    }
     if (!props.yelpData.businesses) {
-      console.log('no businesses found');return _possibleConstructorReturn(_this);
-    } // probably should handle better
+      _this.noBars('no businesses found');return _possibleConstructorReturn(_this);
+    }
     var businesses = props.yelpData.businesses.filter(function (vals) {
       return !vals['is_closed'];
     });
     if (!businesses) {
-      console.log('no open businesses');return _possibleConstructorReturn(_this);
+      _this.noBars('no open businesses');return _possibleConstructorReturn(_this);
     }
 
     for (var i = 0, l = Math.min(businesses.length, 20); i < l; i++) {
@@ -21251,12 +21254,21 @@ var AllBars = function (_React$Component) {
     _this.state = {
       bars: allRows,
       barDict: barDict,
-      user: props.user
+      user: props.user,
+      noBarsError: false
     };
     return _this;
   }
 
   _createClass(AllBars, [{
+    key: 'noBars',
+    value: function noBars(err_message) {
+      console.log(err_message);
+      this.state = {
+        noBarsError: err_message
+      };
+    }
+  }, {
     key: 'parseBar',
     value: function parseBar(yelpData) {
       // parse data from this yelp node
@@ -21337,6 +21349,13 @@ var AllBars = function (_React$Component) {
     value: function render() {
       var _this5 = this;
 
+      if (this.state.noBarsError) {
+        return React.createElement(
+          'p',
+          { className: 'present-message' },
+          this.state.noBarsError
+        );
+      }
       return React.createElement(
         'div',
         { className: 'bars-body container' },
@@ -21477,8 +21496,24 @@ module.exports = function (user, hideLocation) {
     };
   }
 
+  var liLocation = document.getElementById('li-location');
   if (hideLocation) {
-    document.getElementById('li-location').remove();
+    liLocation.remove();
+  } else {
+    // get the location
+    d3.json('/api/this_session', function (err, json) {
+      if (err) throw err;
+      if (!json.hasOwnProperty('location')) return;
+      var name;
+      if (json.location.hasOwnProperty('name')) {
+        name = json.location.name;
+      } else if (json.location.hasOwnProperty('lat')) {
+        name = "current";
+      } else {
+        return;
+      }
+      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + "<a href='/home'>(change)</a></span>";
+    });
   }
 };
 

@@ -12,10 +12,11 @@ class AllBars extends React.Component {
     let bar, row;
     
     //edge-y cases
-    if (!props.yelpData) { console.log('no yelp data found'); return; }   // probably should handle better
-    if (!props.yelpData.businesses) { console.log('no businesses found'); return; }   // probably should handle better
+    if (!props.yelpData) { this.noBars('no yelp data found'); return; }   
+    if (props.yelpData.hasOwnProperty('error')) { this.noBars(props.yelpData.error.code + ': ' + props.yelpData.error.description); return; }
+    if (!props.yelpData.businesses) { this.noBars('no businesses found'); return; }   
     let businesses = props.yelpData.businesses.filter((vals) => !vals['is_closed']);
-    if (!businesses) {console.log('no open businesses'); return; }
+    if (!businesses) {this.noBars('no open businesses'); return; }
 
     for (var i=0, l=Math.min(businesses.length, 20); i<l; i++) {
       bar = this.parseBar(businesses[i]);
@@ -33,7 +34,15 @@ class AllBars extends React.Component {
     this.state = {
       bars: allRows,
       barDict: barDict,
-      user: props.user
+      user: props.user,
+      noBarsError: false
+    };
+  }
+
+  noBars(err_message) {
+    console.log(err_message)
+    this.state = {
+      noBarsError: err_message
     };
   }
 
@@ -98,11 +107,16 @@ class AllBars extends React.Component {
     );
   }
   render() {
+    if (this.state.noBarsError) {
+      return (
+        <p className='present-message'>{this.state.noBarsError}</p>
+      );
+    }
     return (
       <div className={'bars-body container'}>
         {this.state.bars.map((row, idx) => this.renderRow(row, idx))}
       </div>
-    )
+    );
   }
 }
 

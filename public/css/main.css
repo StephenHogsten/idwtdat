@@ -4,6 +4,9 @@ body {
 .fa {
   color: CornSilk; }
 
+#react-shell {
+  min-height: 600px; }
+
 .my-header {
   color: CornSilk;
   font-family: "Dosis", sans-serif; }
@@ -35,6 +38,9 @@ body {
   margin-top: 5px;
   margin-bottom: 5px; }
 
+.landing-container {
+  min-height: 600px; }
+
 .one-bar {
   background-color: DarkSeaGreen;
   background-size: cover;
@@ -59,6 +65,9 @@ body {
   font-weight: lighter;
   font-family: "Dosis", sans-serif; }
 
+.bar-title:hover {
+  cursor: pointer; }
+
 .bar-subtitle {
   color: CornSilk;
   font-style: italic; }
@@ -74,9 +83,21 @@ body {
   line-height: 50px;
   font-family: "Dosis", sans-serif; }
 
+.user-going:hover, .user-not-going:hover {
+  cursor: pointer; }
+
 .user-not-going {
   margin-left: 10px;
   background-color: transparent; }
+
+.present-message, .error-message {
+  color: CornSilk;
+  font-size: 30px;
+  text-align: center;
+  margin: auto; }
+
+.error-message {
+  font-size: 16px; }
 
 .hidden {
   display: none; }

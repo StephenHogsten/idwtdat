@@ -53,6 +53,10 @@ body {
   margin-bottom: 5px;
 }
 
+.landing-container {
+  min-height: 600px;
+}
+
 .one-bar {
   background-color: $secondary;
   background-size: cover;
@@ -110,6 +114,18 @@ body {
   @extend .user-going;
   margin-left: 10px;
   background-color: transparent;
+}
+
+.present-message {
+  color: $primary-text;
+  font-size: 30px;
+  text-align: center;
+  margin: auto;
+}
+
+.error-message {
+  @extend .present-message;
+  font-size: 16px;
 }
 
 .hidden {

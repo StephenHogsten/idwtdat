@@ -756,6 +756,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
   };
 
   searchText.focus();
+  searchText.select();
 })();
 
 },{"./modules/topNav.js":6,"d3-request":4}],6:[function(require,module,exports){
@@ -780,8 +781,24 @@ module.exports = function (user, hideLocation) {
     };
   }
 
+  var liLocation = document.getElementById('li-location');
   if (hideLocation) {
-    document.getElementById('li-location').remove();
+    liLocation.remove();
+  } else {
+    // get the location
+    d3.json('/api/this_session', function (err, json) {
+      if (err) throw err;
+      if (!json.hasOwnProperty('location')) return;
+      var name;
+      if (json.location.hasOwnProperty('name')) {
+        name = json.location.name;
+      } else if (json.location.hasOwnProperty('lat')) {
+        name = "current";
+      } else {
+        return;
+      }
+      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + "<a href='/home'>(change)</a></span>";
+    });
   }
 };
 

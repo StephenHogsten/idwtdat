@@ -17,7 +17,23 @@ module.exports = (user, hideLocation) => {
     };
   }
 
+  var liLocation = document.getElementById('li-location');
   if (hideLocation) {
-    document.getElementById('li-location').remove();
+    liLocation.remove();
+  } else {
+    // get the location
+    d3.json('/api/this_session', (err, json) => {
+      if (err) throw err;
+      if (!json.hasOwnProperty('location')) return;
+      var name;
+      if (json.location.hasOwnProperty('name')) {
+        name = json.location.name; 
+      } else if (json.location.hasOwnProperty('lat')) { 
+        name = "current"
+      } else {
+        return;
+      }
+      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + "<a href='/home'>(change)</a></span>"
+    })
   }
 };

@@ -51,4 +51,5 @@
   };
   
   searchText.focus();
+  searchText.select();
 })();
