@@ -21,6 +21,7 @@ function yelpToken(req, res, next) {
       if (err) { console.log(error); console.log(err); throw err; }
       console.log('posted');
       req.session.yelp_access_token = response.access_token;
+      console.log(req.session);
       next();
     });
   } else {
