@@ -57,13 +57,16 @@ body {
 .bar-info-container {
   position: relative;
   top: -150px;
-  margin-left: 10px; }
+  margin-left: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
 
 .bar-title {
   color: CornSilk;
   font-size: 38px;
   font-weight: lighter;
-  font-family: "Dosis", sans-serif; }
+  font-family: "Dosis", sans-serif;
+  height: 50px; }
 
 .bar-title:hover {
   cursor: pointer; }

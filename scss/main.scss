@@ -65,7 +65,7 @@ body {
   padding: 0px;
 }
 
-.bar-fade {
+.bar-fade { 
   height: unquote($bar-box-height + 'px');
   background: linear-gradient(rgba(0,0,0,0.2) 40%, rgba(0, 0, 0, 1) 100%); 
   margin: 0px;
@@ -76,13 +76,16 @@ body {
   position: relative;
   top: unquote(-$bar-box-height / 2 + 'px');
   margin-left: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bar-title {
   color: $primary-text;
   font-size: 38px;
   font-weight: lighter;
-  font-family: $font
+  font-family: $font;
+  height: 50px
 }
 .bar-title:hover {
   cursor: pointer;

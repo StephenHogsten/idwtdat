@@ -109,7 +109,7 @@ class AllBars extends React.Component {
   render() {
     if (this.state.noBarsError) {
       return (
-        <p className='present-message'>{this.state.noBarsError}</p>
+        <p className='error-message'>{this.state.noBarsError}</p>
       );
     }
     return (

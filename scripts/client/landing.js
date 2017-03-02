@@ -768,11 +768,16 @@ module.exports = function (user, hideLocation) {
   var loginBtn = document.getElementById('login-btn');
   if (user) {
     console.log('we have a user');
-    loginBtn.innerHTML = 'Log Out';
+    loginBtn.innerText = 'Log out';
     // log them out when clicked
     loginBtn.onclick = function () {
       window.location.pathname = '/api/logout';
     };
+    d3.json('/api/this_session', function (err, json) {
+      if (json.Twitter && json.Twitter.screen_name) {
+        loginBtn.innerText = 'Log Out of ' + json.Twitter.screen_name;
+      }
+    });
   } else {
     console.log('we have no user');
     // log them in when clicked
