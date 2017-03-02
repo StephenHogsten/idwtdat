@@ -93,14 +93,17 @@ body {
   margin-left: 10px;
   background-color: transparent; }
 
-.present-message, .error-message {
+.present-message, .error-message, #error-message {
   color: CornSilk;
   font-size: 30px;
   text-align: center;
   margin: auto; }
 
-.error-message {
+.error-message, #error-message {
   font-size: 16px; }
+
+#error-message {
+  text-align: left; }
 
 .hidden {
   display: none; }

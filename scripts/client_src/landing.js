@@ -5,12 +5,21 @@
 
   const topNav = require('./modules/topNav.js');
 
+  const errMessage = document.getElementById('error-message');
+
+  function errDiv(message) {
+    errMessage.innerText = message;
+    errMessage.className = 'error-message';
+    window.setTimeout(() => {
+      errMessage.className = 'error-message hidden'
+    }, 2500);
+  }
+
   function submitLocation() {
     navigator.geolocation.getCurrentPosition( (pos) => {
       window.location.href = '/location/latlon/' + pos.coords.latitude + '/' + pos.coords.longitude;
     }, (err) => {
-      // show an error div later
-      console.log('location denied');
+      errDiv('location denied');
     });
   }
 
@@ -18,7 +27,7 @@
     var text = (searchText.value).trim();
     if (!text) {
       // show an error div later
-      console.log('no search text');
+      errDiv('no search text');
       return;
     }
     // save the location to the session

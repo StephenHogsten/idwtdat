@@ -3,7 +3,6 @@ var d3 = require('d3-request');
 module.exports = (user, hideLocation) => {
   let loginBtn = document.getElementById('login-btn');
   if (user) {
-    console.log('we have a user');
     loginBtn.innerText = 'Log out';
     // log them out when clicked
     loginBtn.onclick = () => {
@@ -15,7 +14,6 @@ module.exports = (user, hideLocation) => {
       }
     })
   } else {
-    console.log('we have no user');
     // log them in when clicked
     loginBtn.onclick = () => {
       window.open('/api/login_twitter');
@@ -38,7 +36,7 @@ module.exports = (user, hideLocation) => {
       } else {
         return;
       }
-      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + "<a href='/home'>(change)</a></span>"
+      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + " <a href='/home'>(change)</a></span>"
     })
   }
 };

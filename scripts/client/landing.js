@@ -710,12 +710,21 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
   var topNav = require('./modules/topNav.js');
 
+  var errMessage = document.getElementById('error-message');
+
+  function errDiv(message) {
+    errMessage.innerText = message;
+    errMessage.className = 'error-message';
+    window.setTimeout(function () {
+      errMessage.className = 'error-message hidden';
+    }, 2500);
+  }
+
   function submitLocation() {
     navigator.geolocation.getCurrentPosition(function (pos) {
       window.location.href = '/location/latlon/' + pos.coords.latitude + '/' + pos.coords.longitude;
     }, function (err) {
-      // show an error div later
-      console.log('location denied');
+      errDiv('location denied');
     });
   }
 
@@ -723,7 +732,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
     var text = searchText.value.trim();
     if (!text) {
       // show an error div later
-      console.log('no search text');
+      errDiv('no search text');
       return;
     }
     // save the location to the session
@@ -767,7 +776,6 @@ var d3 = require('d3-request');
 module.exports = function (user, hideLocation) {
   var loginBtn = document.getElementById('login-btn');
   if (user) {
-    console.log('we have a user');
     loginBtn.innerText = 'Log out';
     // log them out when clicked
     loginBtn.onclick = function () {
@@ -779,7 +787,6 @@ module.exports = function (user, hideLocation) {
       }
     });
   } else {
-    console.log('we have no user');
     // log them in when clicked
     loginBtn.onclick = function () {
       window.open('/api/login_twitter');
@@ -802,7 +809,7 @@ module.exports = function (user, hideLocation) {
       } else {
         return;
       }
-      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + "<a href='/home'>(change)</a></span>";
+      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + " <a href='/home'>(change)</a></span>";
     });
   }
 };

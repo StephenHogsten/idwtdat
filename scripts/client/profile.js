@@ -21263,7 +21263,6 @@ var AllBars = function (_React$Component) {
   _createClass(AllBars, [{
     key: 'noBars',
     value: function noBars(err_message) {
-      console.log(err_message);
       this.state = {
         noBarsError: err_message
       };
@@ -21291,7 +21290,7 @@ var AllBars = function (_React$Component) {
 
       d3.json('/api/oneBar/' + encodeURIComponent(bar.id), function (err, json) {
         if (err) {
-          console.log('api error');throw err;
+          throw err;
         }
 
         bar.countGoing = json.going_count;
@@ -21482,7 +21481,6 @@ var d3 = require('d3-request');
 module.exports = function (user, hideLocation) {
   var loginBtn = document.getElementById('login-btn');
   if (user) {
-    console.log('we have a user');
     loginBtn.innerText = 'Log out';
     // log them out when clicked
     loginBtn.onclick = function () {
@@ -21494,7 +21492,6 @@ module.exports = function (user, hideLocation) {
       }
     });
   } else {
-    console.log('we have no user');
     // log them in when clicked
     loginBtn.onclick = function () {
       window.open('/api/login_twitter');
@@ -21517,7 +21514,7 @@ module.exports = function (user, hideLocation) {
       } else {
         return;
       }
-      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + "<a href='/home'>(change)</a></span>";
+      liLocation.innerHTML = "<span class='navbar-text'>Location: " + name + " <a href='/home'>(change)</a></span>";
     });
   }
 };

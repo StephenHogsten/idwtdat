@@ -131,6 +131,11 @@ body {
   font-size: 16px;
 }
 
+#error-message {
+  @extend .error-message;
+  text-align: left;
+}
+
 .hidden {
   display: none;
 }

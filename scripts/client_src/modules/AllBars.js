@@ -40,7 +40,6 @@ class AllBars extends React.Component {
   }
 
   noBars(err_message) {
-    console.log(err_message)
     this.state = {
       noBarsError: err_message
     };
@@ -63,7 +62,7 @@ class AllBars extends React.Component {
 
   updateBar(bar) {
     d3.json('/api/oneBar/' + encodeURIComponent(bar.id), (err, json) => {
-      if (err) {console.log('api error'); throw err;}
+      if (err) {throw err;}
 
       bar.countGoing = json.going_count;
       bar.userGoing = json.user_going;    

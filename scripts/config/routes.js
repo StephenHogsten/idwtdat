@@ -85,7 +85,6 @@ module.exports = (app) => {
         });
       }
     });
-  app.get('/api/get_token', businessController.getToken);
   app.get('/api/login_twitter', (req, res, next) => {
     // step 1, get request access token
     var reqUrl = 'https://api.twitter.com/oauth/request_token'
@@ -95,9 +94,7 @@ module.exports = (app) => {
     }, [process.env.TWITTER_APP_SECRET], (err, reqResponse) => {
       if (err) { errorRedirect(res, 'access token request failed'); }
       var reqResponse = querystring.parse(reqResponse);
-      console.log(reqResponse);
       if (!reqResponse.oauth_callback_confirmed) { errorRedirect(res, 'access token request failed - oauth_call_confirmed is false'); }
-      console.log('step 1 complete');
       // step 2, redirect user
       reqUrl = 'https://api.twitter.com/oauth/authenticate/?oauth_token=' + reqResponse.oauth_token;
       req.session.tmp_request_token = reqResponse.oauth_token;
@@ -140,7 +137,6 @@ module.exports = (app) => {
       errorRedirect(res, 'token does not match');
       return;
     }
-    console.log('step 2 complete');
     // step 3, exchange my current keys for actual user keys
     httpReq.auth(
       'https://api.twitter.com/oauth/access_token',
@@ -152,7 +148,6 @@ module.exports = (app) => {
       },
       [process.env.TWITTER_APP_SECRET],
       (err, finalResponse) => {
-        console.log('step 3 complete');
         delete req.session.tmp_request_token;
         delete req.session.tmp_request_token_secret;
         finalResponse = querystring.parse(finalResponse);
