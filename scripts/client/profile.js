@@ -21422,12 +21422,12 @@ var OneBar = function (_React$Component) {
           'div',
           { className: 'bar-info-container', key: 'bar-info' },
           React.createElement(
-            'span',
+            'div',
             { className: 'bar-title', key: 'bar-title' },
             this.props.title
           ),
           React.createElement(
-            'span',
+            'div',
             { className: 'stars', key: 'stars' },
             this.makeStars()
           ),

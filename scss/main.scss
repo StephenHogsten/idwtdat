@@ -1,8 +1,8 @@
-$green: rgb(0,232, 0);
 $primary: DarkOliveGreen;
 $secondary: DarkSeaGreen;
 $primary-text: CornSilk;
 $bar-box-height: 300;
+$font: 'Dosis', sans-serif;
 
 body {
   background-color: black;
@@ -14,12 +14,13 @@ body {
 
 .my-header {
   color: $primary-text;
-  font-family: 'Dosis', sans-serif;
+  font-family: $font;
 }
 
 .my-sub-header {
   color: $primary-text;
-  font-family: 'Dosis', sans-serif;
+  font-family: $font;
+  font-style: italic; 
 }
 
 .navbar-inverse {
@@ -32,13 +33,14 @@ body {
   margin: 5px;
 }
 
-.header-bar {
-  background-color: $primary;
-}
-
 .footer {
-  background-color: $secondary;
+  background-color: $primary;
   color: $primary-text;
+  height: 39px;
+  text-align: center;
+  font-family: $font;
+  font-size: 16px;
+  padding-top: 8px;
 }
 
 .container {
@@ -46,10 +48,9 @@ body {
 }
 
 .one-bar {
-  @extend .standard-round;
   background-color: $secondary;
   background-size: cover;
-  height: unquote($bar-box-height + 'px');
+  height: unquote($bar-box-height/2 + 'px');
   position: relative;
   padding: 0px;
 }
@@ -63,26 +64,38 @@ body {
 
 .bar-info-container {
   position: relative;
-  top: unquote(-$bar-box-height / 2 + 'px');
+  top: unquote(-$bar-box-height / 3 + 'px');
 }
 
 .bar-title {
   color: $primary-text;
-  font-weight: bolder;
+  font-size: 38px;
+  font-weight: lighter;
+  font-family: $font
 }
 .bar-subtitle {
   color: $primary-text;
+  font-style: italic;
 }
 .going-count {
-  color: $primary-text;
-}
-.user-going {
-  color: $primary-text;
-  background-color: $green;
-}
-.user-not-going {
+  @extend .standard-round;
   color: $primary-text;
   background-color: $primary;
+  border-style: solid;
+  border-color: $primary-text;
+  padding: 5px;
+  margin: 5px;
+  display: inline;
+  line-height: 50px;
+  font-family: $font;
+}
+.user-going {
+  @extend .going-count;
+}
+.user-not-going {
+  @extend .going-count;
+  margin-left: 10px;
+  background-color: transparent;
 }
 
 .hidden {

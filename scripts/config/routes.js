@@ -31,7 +31,7 @@ function errorRedirect(res, message) {
 
 module.exports = (app) => {
   app.get('/vanilla', (req, res) => {
-    res.sendFile(path.join(base, "landing.html"));
+    res.sendFile(path.join(base, "profile.html"));
   })
   app.get('/', yelpToken, (req, res) => {
     if (req.session.hasOwnProperty('location')) {
@@ -68,13 +68,10 @@ module.exports = (app) => {
 
 
   // APIs
-  app.get('/api/retrieve/:location', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'junkdata.json'));
-  });
   app.route('/api/location_data')
     .get((req, res) => {
-      if (!req.session) { console.log("req.session not found"); }
-      else if (!req.session.location) { console.log("req.session.location not found"); }
+      if (!req.session) { errorRedirect(res, "req.session not found"); }
+      else if (!req.session.location) { errorRedirect(res, "req.session.location not found"); }
       else {
         let url = 'https://api.yelp.com/v3/businesses/search?categories=bars';
         if (req.session.location.name) {

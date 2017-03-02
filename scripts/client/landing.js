@@ -705,31 +705,30 @@ Object.defineProperty(exports, '__esModule', { value: true });
 },{"d3-collection":1,"d3-dispatch":2,"d3-dsv":3}],5:[function(require,module,exports){
 'use strict';
 
-var d3 = require('d3-request');
-
-var topNav = require('./modules/topNav.js');
-
-function submitLocation() {
-  navigator.geolocation.getCurrentPosition(function (pos) {
-    window.location.href = '/location/latlon/' + pos.coords.latitude + '/' + pos.coords.longitude;
-  }, function (err) {
-    // show an error div later
-    console.log('location denied');
-  });
-}
-
-function submitText() {
-  var text = searchText.value.trim();
-  if (!text) {
-    // show an error div later
-    console.log('no search text');
-    return;
-  }
-  // save the location to the session
-  window.location.href = '/location/name/' + text;
-}
-
 (function () {
+  var d3 = require('d3-request');
+
+  var topNav = require('./modules/topNav.js');
+
+  function submitLocation() {
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      window.location.href = '/location/latlon/' + pos.coords.latitude + '/' + pos.coords.longitude;
+    }, function (err) {
+      // show an error div later
+      console.log('location denied');
+    });
+  }
+
+  function submitText() {
+    var text = searchText.value.trim();
+    if (!text) {
+      // show an error div later
+      console.log('no search text');
+      return;
+    }
+    // save the location to the session
+    window.location.href = '/location/name/' + text;
+  }
 
   d3.text('/api/this_user/', function (err, user) {
     if (err) throw err;
@@ -744,6 +743,11 @@ function submitText() {
   searchText.onfocus = function (a, b, c) {
     searchText.select();
   };
+  d3.json('/api/this_session', function (err, session) {
+    if (!session.hasOwnProperty('location')) return;
+    if (!session.location.hasOwnProperty('name')) return;
+    searchText.value = session.location.name;
+  });
 
   document.onkeypress = function (event) {
     if (event.keyCode === 13) {

@@ -6,26 +6,29 @@ body {
 
 .my-header {
   color: CornSilk;
-  font-family: 'Dosis', sans-serif; }
+  font-family: "Dosis", sans-serif; }
 
 .my-sub-header {
   color: CornSilk;
-  font-family: 'Dosis', sans-serif; }
+  font-family: "Dosis", sans-serif;
+  font-style: italic; }
 
 .navbar-inverse {
   border-top-left-radius: 0;
   border-top-right-radius: 0; }
 
-.standard-round, .one-bar {
+.standard-round, .going-count, .user-going, .user-not-going {
   border-radius: 4px;
   margin: 5px; }
 
-.header-bar {
-  background-color: DarkOliveGreen; }
-
 .footer {
-  background-color: DarkSeaGreen;
-  color: CornSilk; }
+  background-color: DarkOliveGreen;
+  color: CornSilk;
+  height: 39px;
+  text-align: center;
+  font-family: "Dosis", sans-serif;
+  font-size: 16px;
+  padding-top: 8px; }
 
 .container {
   margin: 5px; }
@@ -45,25 +48,32 @@ body {
 
 .bar-info-container {
   position: relative;
-  top: -150px; }
+  top: -100px; }
 
 .bar-title {
   color: CornSilk;
-  font-weight: bolder; }
+  font-size: 38px;
+  font-weight: lighter;
+  font-family: "Dosis", sans-serif; }
 
 .bar-subtitle {
-  color: CornSilk; }
-
-.going-count {
-  color: CornSilk; }
-
-.user-going {
   color: CornSilk;
-  background-color: #00e800; }
+  font-style: italic; }
+
+.going-count, .user-going, .user-not-going {
+  color: CornSilk;
+  background-color: DarkOliveGreen;
+  border-style: solid;
+  border-color: CornSilk;
+  padding: 5px;
+  margin: 5px;
+  display: inline;
+  line-height: 50px;
+  font-family: "Dosis", sans-serif; }
 
 .user-not-going {
-  color: CornSilk;
-  background-color: DarkOliveGreen; }
+  margin-left: 10px;
+  background-color: transparent; }
 
 .hidden {
   display: none; }
