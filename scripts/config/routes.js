@@ -9,14 +9,17 @@ var httpReq = require('../controllers/httpReq.js');
 var base = path.join(process.cwd(), 'public', 'views');
 
 function yelpToken(req, res, next) {
+  console.log('trying to get token');
   if (req.session && !req.session.hasOwnProperty('yelp_access_token')) {
     var yelpObj = {
       grant_type: 'client_credentials',
       client_id: process.env.YELP_APP_ID,
       client_secret: process.env.YELP_APP_SECRET
     };
+    console.log('ready to post request');
     httpReq.post('https://api.yelp.com/oauth2/token', yelpObj, (err, response) => {
-      if (err) throw err;
+      if (err) { console.log(error); console.log(err); throw err; }
+      console.log('posted');
       req.session.yelp_access_token = response.access_token;
       next();
     });
@@ -30,9 +33,6 @@ function errorRedirect(res, message) {
 }
 
 module.exports = (app) => {
-  app.get('/vanilla', (req, res) => {
-    res.sendFile(path.join(base, "profile.html"));
-  })
   app.get('/', yelpToken, (req, res) => {
     if (req.session.hasOwnProperty('location')) {
       res.redirect('/profile');
