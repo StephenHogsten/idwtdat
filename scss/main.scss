@@ -12,6 +12,10 @@ body {
   color: $primary-text;
 }
 
+#react-shell {
+  min-height: 600px;
+}
+
 .my-header {
   color: $primary-text;
   font-family: $font;
@@ -44,13 +48,15 @@ body {
 }
 
 .container {
-  margin: 5px;
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .one-bar {
   background-color: $secondary;
   background-size: cover;
-  height: unquote($bar-box-height/2 + 'px');
+  height: unquote($bar-box-height + 'px');
   position: relative;
   padding: 0px;
 }
@@ -64,7 +70,8 @@ body {
 
 .bar-info-container {
   position: relative;
-  top: unquote(-$bar-box-height / 3 + 'px');
+  top: unquote(-$bar-box-height / 2 + 'px');
+  margin-left: 10px;
 }
 
 .bar-title {
@@ -73,6 +80,10 @@ body {
   font-weight: lighter;
   font-family: $font
 }
+.bar-title:hover {
+  cursor: pointer;
+}
+
 .bar-subtitle {
   color: $primary-text;
   font-style: italic;
@@ -91,9 +102,12 @@ body {
 }
 .user-going {
   @extend .going-count;
+  &:hover {
+    cursor: pointer;
+  }
 }
 .user-not-going {
-  @extend .going-count;
+  @extend .user-going;
   margin-left: 10px;
   background-color: transparent;
 }

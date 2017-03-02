@@ -48,7 +48,11 @@ class OneBar extends React.Component {
         >
         <div className="bar-fade" key="bar-fade"></div>
         <div className="bar-info-container" key="bar-info">
-          <div className="bar-title" key="bar-title">{this.props.title}</div>
+          <div 
+            className="bar-title" 
+            key="bar-title"
+            onClick={() => window.open(this.props.url)}
+            >{this.props.title}</div>
           <div className="stars" key="stars">{this.makeStars()}</div>
           {/*<span className="bar-subtitle" key="bar-subtitle">{this.props.snippet}</span>*/}
           <span className="going-count" key="going-count">{'total going: ' + this.props.countGoing}</span>

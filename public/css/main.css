@@ -31,7 +31,9 @@ body {
   padding-top: 8px; }
 
 .container {
-  margin: 5px; }
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px; }
 
 .one-bar {
   background-color: DarkSeaGreen;
@@ -48,7 +50,8 @@ body {
 
 .bar-info-container {
   position: relative;
-  top: -100px; }
+  top: -150px;
+  margin-left: 10px; }
 
 .bar-title {
   color: CornSilk;

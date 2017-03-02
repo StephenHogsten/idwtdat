@@ -21411,6 +21411,8 @@ var OneBar = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return React.createElement(
         'div',
         {
@@ -21423,7 +21425,13 @@ var OneBar = function (_React$Component) {
           { className: 'bar-info-container', key: 'bar-info' },
           React.createElement(
             'div',
-            { className: 'bar-title', key: 'bar-title' },
+            {
+              className: 'bar-title',
+              key: 'bar-title',
+              onClick: function onClick() {
+                return window.open(_this2.props.url);
+              }
+            },
             this.props.title
           ),
           React.createElement(
