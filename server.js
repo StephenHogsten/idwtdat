@@ -23,17 +23,21 @@ var app = express();
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/client', express.static(path.join(__dirname, 'scripts', 'client')));
 
-app.use(session({
+var sessionOptions = {
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   store: new MongoStore({
     mongooseConnection: mongoose.connection
-  }),
-  cookie: {
-    secure: (process.env.ENV_TYPE === 'PRODUCTION')
-  }
-}));
+  })
+};
+
+if (process.env.ENV_TYPE === 'PRODUCTION') {
+  sessionOptions.cookie = { secure: true }
+  app.set('trust proxy', 1);
+}
+
+app.use(session(sessionOptions));
 
 app.use(bodyParser.urlencoded({extended: false}));
 
